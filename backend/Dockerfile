@@ -19,4 +19,4 @@ EXPOSE 5000
 # disconnected view of who's online. For real horizontal scaling, add
 # Flask-SocketIO's message_queue option (Redis) and you can go back to
 # multiple workers/containers - not needed at this project's scale.
-CMD ["gunicorn", "--worker-class", "eventlet", "--bind", "0.0.0.0:5000", "--workers", "1", "run:app"]
+CMD ["gunicorn", "--worker-class", "eventlet", "--bind", "0.0.0.0:5000", "--workers", "1", "run:flask_app"]
