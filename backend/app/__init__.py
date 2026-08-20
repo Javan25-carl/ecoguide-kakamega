@@ -28,10 +28,24 @@ def create_app(config_name=None):
     migrate.init_app(app, db)
     login_manager.init_app(app)
     jwt.init_app(app)
-    CORS(app, supports_credentials=True, origins=app.config.get("CORS_ORIGINS", "*"))
+    cors_origins = app.config.get("CORS_ORIGINS", "*")
+
+    if isinstance(cors_origins, str) and cors_origins != "*":
+        cors_origins = [
+            origin.strip()
+            for origin in cors_origins.split(",")
+            if origin.strip()
+        ]
+
+    CORS(
+        app,
+        supports_credentials=True,
+        origins=cors_origins,
+    )
+
     socketio.init_app(
         app,
-        cors_allowed_origins=app.config.get("CORS_ORIGINS", "*"),
+        cors_allowed_origins=cors_origins,
         async_mode="threading",
     )
 
